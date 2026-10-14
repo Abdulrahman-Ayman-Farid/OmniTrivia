@@ -1,0 +1,6 @@
+{
+  "name": "OmniTrivia: AI Game Show Arena",
+  "description": "Live AI-hosted trivia game show featuring dynamic host personalities, real-time voice conversations, Google Search grounded questions, and expressive speech audio.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
