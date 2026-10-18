@@ -28,6 +28,11 @@ const ai = new GoogleGenAI({
   },
 });
 
+// Health check endpoint for container orchestration / load balancers
+app.get('/health', (_req, res) => {
+  res.json({ status: 'ok' });
+});
+
 export interface HostPersona {
   id: string;
   name: string;
