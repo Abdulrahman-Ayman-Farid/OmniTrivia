@@ -1,0 +1,38 @@
+# Dependencies (installed inside the image, never copy from host)
+node_modules
+
+# Build output (rebuilt inside the image)
+dist
+build
+
+# Version control
+.git
+.gitignore
+
+# Environment files (secrets — loaded via docker-compose env_file or runtime env)
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test coverage
+coverage
+.nyc_output
+
+# TypeScript build info
+*.tsbuildinfo
+
+# OS / editor cruft
+.DS_Store
+.vscode
+.idea
+*.swp
+*.swo
+
+# Docker files (not needed inside the build context)
+Dockerfile
+docker-compose.yml
+.dockerignore

@@ -1,0 +1,70 @@
+# NOTE: The image tag below should be updated by CI/CD (e.g. via Kustomize image
+# override or sed replacement) on every successful build/promotion to UAT.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omnitrivia-uat
+  namespace: omnitrivia-uat
+  labels:
+    app: omnitrivia
+    environment: uat
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: omnitrivia
+      environment: uat
+  template:
+    metadata:
+      labels:
+        app: omnitrivia
+        environment: uat
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: omnitrivia
+          image: omnitrivia:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          envFrom:
+            - configMapRef:
+                name: omnitrivia-uat-config
+            - secretRef:
+                name: omnitrivia-uat-secrets
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 3
