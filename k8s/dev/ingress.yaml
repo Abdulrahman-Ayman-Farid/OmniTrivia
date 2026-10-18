@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: omnitrivia-dev-ingress
+  namespace: omnitrivia-dev
+  labels:
+    app: omnitrivia
+    environment: dev
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - dev.omnitrivia.local
+      # NOTE: The TLS secret must be provisioned separately, e.g. via
+      # cert-manager (Certificate + Issuer) or a manually created TLS secret.
+      secretName: omnitrivia-dev-tls
+  rules:
+    - host: dev.omnitrivia.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: omnitrivia-dev
+                port:
+                  number: 3000

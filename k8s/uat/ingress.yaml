@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: omnitrivia-uat-ingress
+  namespace: omnitrivia-uat
+  labels:
+    app: omnitrivia
+    environment: uat
+spec:
+  ingressClassName: nginx
+  # NOTE: The TLS secret "omnitrivia-uat-tls" must be provisioned separately,
+  # e.g. via cert-manager (Certificate + Issuer/ClusterIssuer) or manually with
+  # kubectl create secret tls. The Ingress will not serve HTTPS until it exists.
+  tls:
+    - hosts:
+        - uat.omnitrivia.local
+      secretName: omnitrivia-uat-tls
+  rules:
+    - host: uat.omnitrivia.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: omnitrivia-uat
+                port:
+                  number: 3000

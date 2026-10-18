@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: omnitrivia-dev-config
+  namespace: omnitrivia-dev
+  labels:
+    app: omnitrivia
+    environment: dev
+data:
+  APP_URL: http://dev.omnitrivia.local
+  NODE_ENV: production
+  PORT: "3000"

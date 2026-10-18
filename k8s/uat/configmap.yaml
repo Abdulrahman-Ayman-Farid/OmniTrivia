@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: omnitrivia-uat-config
+  namespace: omnitrivia-uat
+  labels:
+    app: omnitrivia
+    environment: uat
+data:
+  APP_URL: http://uat.omnitrivia.local
+  NODE_ENV: production
+  PORT: "3000"

@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: omnitrivia-prod-ingress
+  namespace: omnitrivia-prod
+  labels:
+    app: omnitrivia
+    environment: prod
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+spec:
+  ingressClassName: nginx
+  # NOTE: The TLS secret below must be provisioned separately,
+  #       e.g. via cert-manager (Let's Encrypt) or a manually created TLS secret.
+  tls:
+    - hosts:
+        - omnitrivia.com
+        - www.omnitrivia.com
+      secretName: omnitrivia-prod-tls
+  rules:
+    - host: omnitrivia.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: omnitrivia-prod
+                port:
+                  number: 3000
+    - host: www.omnitrivia.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: omnitrivia-prod
+                port:
+                  number: 3000
