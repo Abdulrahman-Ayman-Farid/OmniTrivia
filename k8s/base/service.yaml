@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: omnitivia
+  labels:
+    app: omnitivia
+spec:
+  type: ClusterIP
+  selector:
+    app: omnitivia
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      name: http
